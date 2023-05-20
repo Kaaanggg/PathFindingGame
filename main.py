@@ -6,6 +6,8 @@ import pygame as pg
 import sys
 from settings import *
 from sprites import *
+from astar import *
+
 
 class Game:
     def __init__(self):
@@ -13,17 +15,19 @@ class Game:
         self.screen = pg.display.set_mode((WIDTH, HEIGHT))
         pg.display.set_caption(TITLE)
         self.clock = pg.time.Clock()
-        pg.key.set_repeat(500, 100)
+        pg.key.set_repeat(500, 500)
         self.load_data()
 
     def load_data(self):
-        pass
+        None
 
     def new(self):
         # initialize all variables and do all the setup for a new game
         self.all_sprites = pg.sprite.Group()
         self.walls = pg.sprite.Group()
         self.player = Player(self, 10, 10)
+        self.enemy = Player(self, 5, 5, Entity.ENEMY)
+        print(self.player.position())
         for x in range(10, 20):
             Wall(self, x, 5)
 
@@ -65,19 +69,26 @@ class Game:
                 if event.key == pg.K_ESCAPE:
                     self.quit()
                 if event.key == pg.K_LEFT:
-                    self.player.move(dx=-1)
+                    self.player.move(dx=-1, next=self.AI_Move)
                 if event.key == pg.K_RIGHT:
-                    self.player.move(dx=1)
+                    self.player.move(dx=1, next=self.AI_Move)
                 if event.key == pg.K_UP:
-                    self.player.move(dy=-1)
+                    self.player.move(dy=-1, next=self.AI_Move)
                 if event.key == pg.K_DOWN:
-                    self.player.move(dy=1)
+                    self.player.move(dy=1, next=self.AI_Move)
+
+    def AI_Move(self):
+        enemy_to_Player = astar(
+            BOARD, self.enemy.position(), self.player.position())
+        if len(enemy_to_Player) > 1:
+            self.enemy.fixMove(enemy_to_Player[1][0], enemy_to_Player[1][1])
 
     def show_start_screen(self):
         pass
 
     def show_go_screen(self):
         pass
+
 
 # create the game object
 g = Game()

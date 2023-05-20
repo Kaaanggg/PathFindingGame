@@ -9,11 +9,19 @@ YELLOW = (255, 255, 0)
 
 # game settings
 WIDTH = 1024   # 16 * 64 or 32 * 32 or 64 * 16
-HEIGHT = 768  # 16 * 48 or 32 * 24 or 64 * 12
+HEIGHT = 740  # 16 * 48 or 32 * 24 or 64 * 12
 FPS = 60
 TITLE = "Tilemap Demo"
 BGCOLOR = DARKGREY
 
-TILESIZE = 32
+TILESIZE = 35
 GRIDWIDTH = WIDTH / TILESIZE
 GRIDHEIGHT = HEIGHT / TILESIZE
+BOARD = [[]]
+print(f"height{GRIDHEIGHT}")
+print(f"width{GRIDWIDTH}")
+for y in range(0, int(GRIDWIDTH)):
+    if y > 0:
+        BOARD.append([])
+    for x in range(0, int(GRIDHEIGHT)):
+        BOARD[y].append(0)
