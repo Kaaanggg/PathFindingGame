@@ -26,6 +26,7 @@ class Game:
             for line in f:
                 self.map_data.append(line)
         print(self.map_data)
+
     def new(self):
         # initialize all variables and do all the setup for a new game
         self.all_sprites = pg.sprite.Group()
@@ -43,7 +44,8 @@ class Game:
                 if tile == 'P':
                     self.player = Player(self, col, row)
                 if tile == 'E':
-                    self.enemy = Player (self, col, row, Entity.ENEMY)
+                    self.enemy = Player(self, col, row, Entity.ENEMY)
+
     def run(self):
         # game loop - set self.playing = False to end the game
         self.playing = True
@@ -91,12 +93,14 @@ class Game:
                     self.player.move(dy=1, next=self.AI_Move)
 
     def AI_Move(self):
-        # enemy_to_Player = astar(
-        #     BOARD, self.enemy.position(), self.player.position())
-        # print(enemy_to_Player)
-        # if len(enemy_to_Player) > 1:
-        #     self.enemy.fixMove(enemy_to_Player[1][0], enemy_to_Player[1][1])
         print(BOARD)
+        enemy_to_Player = astar(
+            BOARD, self.enemy.position(), self.player.position())
+        print(enemy_to_Player)
+        if len(enemy_to_Player) > 1:
+            self.enemy.fixMove(enemy_to_Player[1][0], enemy_to_Player[1][1])
+        if self.player.position() == self.enemy.position():
+            print("the enemey got the player")
 
     def show_start_screen(self):
         pass
