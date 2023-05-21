@@ -20,17 +20,28 @@ class Player(pg.sprite.Sprite):
         self.y = y
 
     def move(self, dx=0, dy=0, next=None):
+        if not self.collide_with_walls(dx, dy):
+            self.x += dx
+            self.y += dy
+
         x = self.x + dx
         y = self.y + dy
         if x >= int(GRIDWIDTH) or x < 0:
             return
         if y >= int(GRIDHEIGHT) or y < 0:
             return
-        if BOARD[x][y] == 1:
-            return
-        self.x += dx
-        self.y += dy
+        # if BOARD[x][y] == 1:
+        #     return
+        # self.x += dx
+        # self.y += dy
         next()
+
+    def collide_with_walls(self, dx=0,dy=0):
+        for wall in self.game.walls:
+            if wall.x == self.x + dx and wall.y == self.y + dy:
+                return True
+        return False
+    
 
     def fixMove(self, dx=0, dy=0):
         self.x = dx
